@@ -1,22 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
 @import 'tailwindcss';
 
 :root {
-  --background: #f7f2ec;
-  --foreground: #2c2416;
-  --card: #fffdfa;
-  --card-foreground: #2c2416;
-  --primary: #b08d4f; /* gold */
-  --primary-foreground: #fffdfa;
-  --secondary: #ecd9d0; /* dusty rose */
-  --secondary-foreground: #5a3e35;
-  --muted: #efe8de;
-  --muted-foreground: #877260;
-  --accent: #b26e79; /* rose accent */
-  --accent-foreground: #fffdfa;
-  --border: #ddceba;
-  --ring: #b08d4f;
-  --radius: 0.5rem;
+  --background: #faf8f5;
+  --foreground: #3a342e;
+  --card: #ffffff;
+  --card-foreground: #3a342e;
+  --primary: #c1a26b; /* soft gold */
+  --primary-foreground: #ffffff;
+  --secondary: #e8dfd8; /* soft dusty rose */
+  --secondary-foreground: #5c4e46;
+  --muted: #f2ece6;
+  --muted-foreground: #948679;
+  --accent: #b8868c; /* muted rose accent */
+  --accent-foreground: #ffffff;
+  --border: #e2d7cc;
+  --ring: #c1a26b;
+  --radius: 0.25rem;
 }
 
 @theme inline {
@@ -35,8 +35,8 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
   --radius: var(--radius);
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans: 'Lato', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', system-ui, sans-serif;
 }
 
 html {

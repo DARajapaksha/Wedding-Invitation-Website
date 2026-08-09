@@ -1,395 +1,350 @@
 import { useEffect, useRef, useState } from "react";
 import { WEDDING } from "../config";
 
-export default function Envelope({ onOpened }: { onOpened: () => void }) {
-  const [stage, setStage] = useState(0); // 0=closed 1=seal lifts 2=flap opens 3=letter rises 4=done
-  const ref = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.intersectionRatio < 0.6) start();
-      },
-      { threshold: [0.6] },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function start() {
-    if (started.current) return;
-    started.current = true;
-    setStage(1);
-    setTimeout(() => setStage(2), 700);
-    setTimeout(() => setStage(3), 1600);
-    setTimeout(() => setStage(4), 2600);
-    setTimeout(() => onOpened(), 3500);
-  }
-
-  const opened = stage >= 2;
-
-  return (
-    <section
-      ref={ref}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
-      style={{
-        background: "#1a1714",
-        transition: "opacity 800ms ease",
-        opacity: stage >= 4 ? 0 : 1,
-        pointerEvents: stage >= 4 ? "none" : "auto",
-        perspective: "1400px",
-      }}
-    >
-      {/* Watercolor blotches */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div
-          style={{
-            position: "absolute", top: "8%", left: "-8%",
-            width: "50%", height: "45%", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(210,148,148,0.13) 0%, transparent 68%)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute", bottom: "5%", right: "-6%",
-            width: "48%", height: "42%", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(200,138,138,0.10) 0%, transparent 68%)",
-          }}
-        />
-        {/* Gold dust */}
-        <div style={{ position: "absolute", top: "19%", left: "19%", width: 4, height: 4, borderRadius: "50%", background: "rgba(200,170,70,0.65)" }} />
-        <div style={{ position: "absolute", top: "22%", left: "24%", width: 2.5, height: 2.5, borderRadius: "50%", background: "rgba(200,170,70,0.45)" }} />
-        <div style={{ position: "absolute", top: "17%", left: "17%", width: 2, height: 2, borderRadius: "50%", background: "rgba(200,170,70,0.35)" }} />
-      </div>
-
-      <p
-        className="mb-10 font-serif text-xs tracking-[0.4em] text-white/50 uppercase"
-        style={{ opacity: stage >= 1 ? 0 : 1, transition: "opacity 500ms ease" }}
-      >
-        Together with their families
-      </p>
-
-      <button
-        type="button"
-        onClick={start}
-        aria-label="Open the invitation"
-        style={{
-          position: "relative",
-          width: "min(88vw, 380px)",
-          height: "min(60vw, 256px)",
-          cursor: "pointer",
-          outline: "none",
-          transformStyle: "preserve-3d",
-        }}
-      >
-        {/* ── Letter card (rises from inside envelope) ── */}
-        <div
-          style={{
-            position: "absolute",
-            top: 8, bottom: 8, left: 10, right: 10,
-            zIndex: 20,
-            background: "#fdf8f0",
-            border: "1px solid rgba(200,182,158,0.5)",
-            borderRadius: 3,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "16px 20px",
-            textAlign: "center",
-            transformOrigin: "center 65%",
-            transform: stage >= 4
-              ? "translateY(-62%) scale(3.6)"
-              : stage >= 3
-              ? "translateY(-58%) scale(1)"
-              : "translateY(3%) scale(1)",
-            opacity: stage >= 4 ? 0 : stage >= 3 ? 1 : opened ? 0.7 : 0,
-            transition: "transform 950ms cubic-bezier(0.22,1,0.36,1), opacity 700ms ease",
-          }}
-        >
-          <div style={{ width: 30, height: 1, background: "rgba(180,140,100,0.5)", marginBottom: 10 }} />
-          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "#5a4434", letterSpacing: "0.04em" }}>
-            {WEDDING.groom} <span style={{ color: "#c96b52" }}>&</span> {WEDDING.bride}
-          </p>
-          <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 9, color: "#9a8068", letterSpacing: "0.25em", textTransform: "uppercase", marginTop: 7 }}>
-            request the pleasure of your company
-          </p>
-          <div style={{ width: 30, height: 1, background: "rgba(180,140,100,0.5)", marginTop: 10 }} />
-        </div>
-
-        {/* ── Envelope body (cream vellum, semi-transparent) ── */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 30,
-            background: "rgba(246, 241, 228, 0.90)",
-            borderRadius: 4,
-            boxShadow: "0 24px 64px -20px rgba(0,0,0,0.85), 0 6px 18px -6px rgba(0,0,0,0.45)",
-            overflow: "hidden",
-            transformOrigin: "center bottom",
-            transform: stage >= 4 ? "translateY(130%)" : "translateY(0)",
-            opacity: stage >= 4 ? 0 : 1,
-            transition: "transform 800ms cubic-bezier(0.5,0,0.75,0), opacity 600ms ease",
-          }}
-        >
-          {/* Inset border */}
-          <div
-            style={{
-              position: "absolute",
-              top: 7, bottom: 7, left: 9, right: 9,
-              border: "1px solid rgba(175,160,135,0.50)",
-              borderRadius: 2,
-              pointerEvents: "none",
-            }}
-          />
-          {/* Invitation text visible through vellum */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              justifyContent: "center",
-              padding: "20px 28px",
-              opacity: 0.28,
-              pointerEvents: "none",
-            }}
-          >
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "#4a3828", fontStyle: "italic", lineHeight: 1.2 }}>
-              Invitation
-            </p>
-            <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 11, color: "#6a5848", marginTop: 3 }}>
-              come to our wedding
-            </p>
-            <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 11, color: "#6a5848", marginTop: 8 }}>
-              {WEDDING.groom}
-            </p>
-            <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 11, color: "#6a5848", marginTop: 2 }}>
-              {WEDDING.bride}
-            </p>
-          </div>
-          {/* Bottom triangle fold shadow */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to top, rgba(160,145,118,0.18), transparent 45%)",
-              clipPath: "polygon(0 100%, 50% 45%, 100% 100%)",
-              pointerEvents: "none",
-            }}
-          />
-          {/* Side fold gradients */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to right, rgba(160,145,118,0.10) 0%, transparent 18%, transparent 82%, rgba(160,145,118,0.10) 100%)",
-              pointerEvents: "none",
-            }}
-          />
-        </div>
-
-        {/* ── Flap — arch shape, rotates on top edge ── */}
-        <div
-          style={{
-            position: "absolute",
-            inset: "0 0 auto 0",
-            height: "52%",
-            zIndex: opened ? 10 : 40,
-            transformOrigin: "top center",
-            transformStyle: "preserve-3d",
-            transform: opened ? "rotateX(-174deg)" : "rotateX(0deg)",
-            transition: "transform 920ms cubic-bezier(0.55,0,0.2,1)",
-          }}
-        >
-          {/* Front face */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              overflow: "hidden",
-              backfaceVisibility: "hidden",
-            }}
-          >
-            <svg
-              viewBox="0 0 380 134"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ width: "100%", height: "100%", display: "block" }}
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient id="flapFront" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#f3ede0" />
-                  <stop offset="100%" stopColor="#e8e0cc" />
-                </linearGradient>
-              </defs>
-              {/* Arch: flat top, curves down to a gentle point at bottom center */}
-              <path d="M 0 0 L 380 0 L 380 100 Q 190 134 0 100 Z" fill="url(#flapFront)" />
-              {/* Inner border echo */}
-              <path
-                d="M 9 7 L 371 7 L 371 94 Q 190 126 9 94 Z"
-                fill="none"
-                stroke="rgba(175,160,132,0.42)"
-                strokeWidth="1"
-              />
-              {/* Shade at bottom curve */}
-              <path d="M 0 88 Q 190 134 380 88 L 380 100 Q 190 134 0 100 Z" fill="rgba(155,138,110,0.14)" />
-            </svg>
-          </div>
-          {/* Back face (shown when flap flips open) */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(180deg, #e8e0cc 0%, #dfd6be 100%)",
-              backfaceVisibility: "hidden",
-              transform: "rotateX(180deg)",
-            }}
-          />
-        </div>
-
-        {/* ── Wax seal + baby's breath (centered at flap edge) ── */}
-        <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "48%",
-            zIndex: 50,
-            transform: `translateX(-50%) translateY(-50%)${stage >= 1 ? " translateY(-40px) scale(1.06)" : ""}`,
-            opacity: stage >= 1 ? 0 : 1,
-            transition: "opacity 480ms ease, transform 600ms cubic-bezier(0.22,1,0.36,1)",
-          }}
-        >
-          <BabyBreath />
-          <WaxSeal monogram={`${WEDDING.groom[0]}${WEDDING.bride[0]}`} />
-        </div>
-      </button>
-
-      <div
-        className="mt-12 flex flex-col items-center gap-2"
-        style={{ opacity: stage >= 1 ? 0 : 1, transition: "opacity 500ms ease" }}
-      >
-        <span className="text-[11px] tracking-[0.32em] text-white/45 uppercase">Tap to open</span>
-        <span className="mt-1 h-6 w-px animate-pulse bg-white/30" />
-      </div>
-    </section>
-  );
+function clamp(val: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, val));
+}
+function mapRange(val: number, inMin: number, inMax: number, outMin: number, outMax: number) {
+  const mapped = outMin + ((val - inMin) / (inMax - inMin)) * (outMax - outMin);
+  return clamp(mapped, Math.min(outMin, outMax), Math.max(outMin, outMax));
 }
 
-function WaxSeal({ monogram }: { monogram: string }) {
+export default function Envelope() {
+  const [progress, setProgress] = useState(0);
+  const targetProgress = useRef(0);
+  const currentProgress = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rafId = useRef<number>(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const scrolledPx = -rect.top;
+      const maxScroll = rect.height - window.innerHeight;
+      
+      let p = scrolledPx / maxScroll;
+      targetProgress.current = clamp(p, 0, 1);
+    };
+
+    const tick = () => {
+      currentProgress.current += (targetProgress.current - currentProgress.current) * 0.08;
+      
+      if (Math.abs(targetProgress.current - currentProgress.current) > 0.001) {
+        setProgress(currentProgress.current);
+      } else {
+        setProgress(targetProgress.current);
+        currentProgress.current = targetProgress.current;
+      }
+      rafId.current = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    
+    handleScroll();
+    currentProgress.current = targetProgress.current;
+    setProgress(targetProgress.current);
+    
+    rafId.current = requestAnimationFrame(tick);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      cancelAnimationFrame(rafId.current);
+    };
+  }, []);
+
+  // Stage 1 (0.0 to 0.15): seal pops off and disappears
+  const sealOpacity = mapRange(progress, 0, 0.12, 1, 0);
+  const sealTranslateZ = mapRange(progress, 0, 0.12, 0, 100); // pops forward
+  const sealScale = mapRange(progress, 0, 0.12, 1, 1.2);
+  const instructionsOpacity = mapRange(progress, 0, 0.05, 1, 0);
+
+  // Stage 2 (0.12 to 0.45): Left and Right Flaps open outward like doors
+  const leftFlapRotateY = mapRange(progress, 0.12, 0.45, 0, -170);
+  const rightFlapRotateY = mapRange(progress, 0.12, 0.45, 0, 170);
+  
+  // Flip z-index when they open so they fall behind the card
+  const flapsZIndex = progress >= 0.28 ? 10 : 40;
+
+  // Stage 3 (0.40 to 0.70): Letter scales up to be viewed clearly
+  const letterTranslateY = mapRange(progress, 0.40, 0.70, 0, -15);
+  const letterScale = mapRange(progress, 0.40, 0.70, 1, 1.15); 
+
+  // Stage 4 (0.75 to 1.0): Entire envelope fades out and moves up to reveal real content
+  const envelopeOpacity = mapRange(progress, 0.75, 1.0, 1, 0);
+  const envelopeTranslateY = mapRange(progress, 0.75, 1.0, 0, -100);
+  const wrapperOpacity = mapRange(progress, 0.85, 1.0, 1, 0);
+
   return (
-    <div
-      style={{
-        width: 54,
-        height: 54,
-        borderRadius: "50%",
-        background:
-          "radial-gradient(circle at 36% 30%, #da8068 0%, #c05840 55%, #a84030 100%)",
-        boxShadow:
-          "0 5px 18px -4px rgba(0,0,0,0.55), inset 0 1.5px 3px rgba(255,200,175,0.55), inset 0 -2px 5px rgba(90,28,16,0.45)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "relative",
-        margin: "0 auto",
-        marginTop: -4,
-      }}
-    >
-      <svg
-        viewBox="0 0 54 54"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-        aria-hidden
-      >
-        {/* Dashed outer ring */}
-        <circle cx="27" cy="27" r="23.5" fill="none" stroke="rgba(255,210,185,0.38)" strokeWidth="1.2" strokeDasharray="3.5 2" />
-        {/* Thin inner ring */}
-        <circle cx="27" cy="27" r="19" fill="none" stroke="rgba(255,210,185,0.22)" strokeWidth="0.7" />
-        {/* Crown outline */}
-        <path
-          d="M 18 33 L 18 28 L 21 25 L 24 29 L 27 22 L 30 29 L 33 25 L 36 28 L 36 33 Z"
-          fill="none"
-          stroke="rgba(255,215,190,0.58)"
-          strokeWidth="1.1"
-          strokeLinejoin="round"
-        />
-        {/* Base bar of crown */}
-        <rect x="18" y="33" width="18" height="2.5" rx="1" fill="rgba(255,215,190,0.45)" />
-        {/* Bottom scroll flourish */}
-        <path
-          d="M 16 38 Q 19 40 22 38 Q 25 36 27 38 Q 29 40 32 38 Q 35 36 38 38"
-          fill="none"
-          stroke="rgba(255,215,190,0.40)"
-          strokeWidth="0.9"
-        />
-      </svg>
-      <span
+    <div ref={containerRef} style={{ height: "300vh", position: "relative" }}>
+      <section
+        className="sticky top-0 z-50 flex h-screen flex-col items-center justify-center overflow-hidden"
         style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 12,
-          fontStyle: "italic",
-          color: "rgba(255,228,210,0.92)",
-          position: "relative",
-          zIndex: 1,
-          letterSpacing: "0.06em",
-          lineHeight: 1,
+          background: "#111",
+          opacity: wrapperOpacity,
+          pointerEvents: progress >= 0.9 ? "none" : "auto",
+          perspective: "1800px",
         }}
       >
-        {monogram}
-      </span>
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div
+            style={{
+              position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+              width: "120%", height: "120%", borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(139,24,32,0.12) 0%, transparent 60%)",
+            }}
+          />
+        </div>
+
+        <p
+          className="mb-8 font-serif text-[11px] tracking-[0.4em] text-white/50 uppercase"
+          style={{ opacity: mapRange(progress, 0.05, 0.15, 1, 0) }}
+        >
+          {WEDDING.groom.charAt(0)} & {WEDDING.bride.charAt(0)}
+        </p>
+
+        <div
+          style={{
+            position: "relative",
+            width: "88vw",
+            maxWidth: "50vh",
+            aspectRatio: "1 / 1.45", // Vertical portrait orientation
+            transformStyle: "preserve-3d",
+            containerType: "inline-size",
+          }}
+        >
+          {/* ── Envelope Back Panel (Behind the card) ── */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 10,
+              background: "#6a1015",
+              borderRadius: 3,
+              boxShadow: "0 30px 60px -20px rgba(0,0,0,0.9), 0 10px 25px -5px rgba(0,0,0,0.5)",
+              transform: `translateY(${envelopeTranslateY}%)`,
+              opacity: envelopeOpacity,
+            }}
+          >
+            {/* Inner shadows for depth */}
+            <div style={{ position: "absolute", inset: 0, boxShadow: "inset 0 0 20px rgba(0,0,0,0.8)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.5) 100%)" }} />
+          </div>
+
+          {/* ── Letter card (Inside the gatefold) ── */}
+          <div
+            style={{
+              position: "absolute",
+              top: "3%", bottom: "3%", left: "4%", right: "4%",
+              zIndex: 20,
+              background: "#ffffff",
+              borderRadius: 2,
+              boxShadow: "0 4px 25px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.03)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "10cqi 6cqi",
+              textAlign: "center",
+              transform: `translateY(${envelopeTranslateY + letterTranslateY}%) scale(${letterScale})`,
+              opacity: envelopeOpacity,
+            }}
+          >
+            {/* Elegant inner embossed border */}
+            <div style={{ position: "absolute", inset: "4cqi", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 1 }} />
+            <div style={{ position: "absolute", inset: "5cqi", border: "1px solid rgba(0,0,0,0.04)", borderRadius: 1 }} />
+            
+            <div className="flex flex-col items-center gap-2 mt-4">
+              <svg style={{ width: "10cqi", height: "10cqi", color: "#d4af37" }} viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 2.8l5 5V18h-2v-4H9v4H7V9.8l5-5z" />
+              </svg>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "4cqi", color: "#666", fontStyle: "italic", marginTop: "2cqi" }}>
+                Welcome to our wedding
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center">
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "9cqi", color: "#222", lineHeight: 1.1 }}>
+                {WEDDING.groom} <br/>
+                <span style={{ color: "#d4af37", fontSize: "7cqi", fontStyle: "italic" }}>&</span> <br/>
+                {WEDDING.bride}
+              </p>
+              <p style={{ fontFamily: "'Lato', sans-serif", fontSize: "2.5cqi", color: "#888", letterSpacing: "0.25em", textTransform: "uppercase", marginTop: "6cqi", lineHeight: 1.6 }}>
+                Request the honor of <br/> your presence
+              </p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "4cqi" }}>
+              <span style={{ fontSize: "2.8cqi", color: "#222", letterSpacing: "0.15em", textTransform: "uppercase" }}>{WEDDING.year}</span>
+              <span style={{ fontSize: "2.5cqi", color: "#d4af37", marginTop: "1cqi", letterSpacing: "0.1em" }}>{WEDDING.location}</span>
+            </div>
+          </div>
+
+          {/* ── Left Flap (Gatefold) ── */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0, bottom: 0, left: 0,
+              width: "51.5%", // Slightly more than half to overlap cleanly
+              zIndex: flapsZIndex + 1, // Left flap sits slightly on top of right flap when closed
+              transformOrigin: "left center",
+              transformStyle: "preserve-3d",
+              transform: `translateY(${envelopeTranslateY}%) rotateY(${leftFlapRotateY}deg)`,
+              opacity: envelopeOpacity,
+            }}
+          >
+            {/* Front Face (Red exterior) */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to right, #9e1c25 0%, #7a141b 100%)",
+                backfaceVisibility: "hidden",
+                borderTopLeftRadius: 3,
+                borderBottomLeftRadius: 3,
+                boxShadow: "2px 0 10px rgba(0,0,0,0.4)", // Shadow cast onto the right flap
+              }}
+            >
+              <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "1px", background: "rgba(255,255,255,0.2)" }} />
+            </div>
+            
+            {/* Back Face (Inner Gold Liner) */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "#7a141b", // Base paper
+                backfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+                borderTopRightRadius: 3,
+                borderBottomRightRadius: 3,
+                overflow: "hidden"
+              }}
+            >
+              {/* Inner Liner */}
+              <div style={{ position: "absolute", inset: "2%", right: 0, background: "linear-gradient(135deg, #b8860b, #ffd700, #daa520)" }} />
+              {/* Inner shading */}
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 60%, rgba(0,0,0,0.6) 100%)" }} />
+            </div>
+          </div>
+
+          {/* ── Right Flap (Gatefold) ── */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0, bottom: 0, right: 0,
+              width: "50%",
+              zIndex: flapsZIndex,
+              transformOrigin: "right center",
+              transformStyle: "preserve-3d",
+              transform: `translateY(${envelopeTranslateY}%) rotateY(${rightFlapRotateY}deg)`,
+              opacity: envelopeOpacity,
+            }}
+          >
+            {/* Front Face (Red exterior) */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to left, #9e1c25 0%, #85161d 100%)",
+                backfaceVisibility: "hidden",
+                borderTopRightRadius: 3,
+                borderBottomRightRadius: 3,
+              }}
+            >
+               <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.15)" }} /> {/* Slightly darker as it sits underneath */}
+            </div>
+            
+            {/* Back Face (Inner Gold Liner) */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "#7a141b", // Base paper
+                backfaceVisibility: "hidden",
+                transform: "rotateY(-180deg)",
+                borderTopLeftRadius: 3,
+                borderBottomLeftRadius: 3,
+                overflow: "hidden"
+              }}
+            >
+              {/* Inner Liner */}
+              <div style={{ position: "absolute", inset: "2%", left: 0, background: "linear-gradient(-135deg, #b8860b, #ffd700, #daa520)" }} />
+              {/* Inner shading */}
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, transparent 60%, rgba(0,0,0,0.6) 100%)" }} />
+            </div>
+          </div>
+
+          {/* ── Wax seal (Centered over flaps) ── */}
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              zIndex: 50,
+              transformStyle: "preserve-3d",
+              transform: `translateY(${envelopeTranslateY}%) translateX(-50%) translateY(-50%) translateZ(${sealTranslateZ}px) scale(${sealScale})`,
+              opacity: sealOpacity,
+            }}
+          >
+            <WaxSeal />
+          </div>
+        </div>
+
+        <div
+          className="mt-10 flex flex-col items-center gap-2"
+          style={{ opacity: instructionsOpacity }}
+        >
+          <span className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Scroll to open</span>
+          <span className="mt-1 h-6 w-px animate-bounce bg-white/30" />
+        </div>
+      </section>
     </div>
   );
 }
 
-function BabyBreath() {
-  const flowers: [number, number, number][] = [
-    [28, 18, 2.4], [18, 28, 2], [24, 8, 2.2], [40, 6, 2.5], [50, 14, 2],
-    [60, 5, 2.3], [72, 10, 2], [82, 18, 2.4], [90, 10, 2], [96, 22, 2.2],
-    [14, 40, 1.8], [20, 36, 2], [36, 10, 1.8], [55, 22, 2], [75, 28, 2.2],
-    [100, 32, 1.8], [12, 52, 1.6], [86, 4, 1.8], [105, 14, 1.7], [46, 28, 1.9],
-    [64, 18, 1.8], [108, 42, 1.7], [33, 20, 1.7], [70, 35, 1.9],
-  ];
-  const fills = ["#e8e3f0", "#f0edf6", "#d4e2d0", "#ece8f4", "#f4f0f8"];
-
+function WaxSeal() {
   return (
-    <div style={{ position: "relative", width: 130, height: 72, marginLeft: -38, marginBottom: -10 }}>
+    <div
+      style={{
+        width: "16cqi",
+        height: "16cqi",
+        borderRadius: "50%",
+        background: "radial-gradient(circle at 35% 35%, #ffe55c 0%, #d4af37 30%, #a67c00 70%, #594300 100%)",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.8), inset 0 -4px 8px rgba(0,0,0,0.7)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
       <svg
-        viewBox="0 0 130 72"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", height: "100%", overflow: "visible" }}
+        viewBox="0 0 60 60"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.5))" }}
         aria-hidden
       >
-        {/* Main stems */}
-        <line x1="64" y1="72" x2="28" y2="18" stroke="#556838" strokeWidth="1.1" opacity="0.82" />
-        <line x1="64" y1="72" x2="48" y2="8" stroke="#556838" strokeWidth="1" opacity="0.75" />
-        <line x1="64" y1="72" x2="64" y2="6" stroke="#556838" strokeWidth="1" opacity="0.72" />
-        <line x1="64" y1="72" x2="82" y2="10" stroke="#556838" strokeWidth="1" opacity="0.75" />
-        <line x1="64" y1="72" x2="96" y2="22" stroke="#556838" strokeWidth="1.1" opacity="0.82" />
-        <line x1="64" y1="72" x2="108" y2="42" stroke="#556838" strokeWidth="1" opacity="0.72" />
-        {/* Sub-branches */}
-        <line x1="38" y1="42" x2="18" y2="28" stroke="#556838" strokeWidth="0.7" opacity="0.60" />
-        <line x1="38" y1="42" x2="24" y2="40" stroke="#556838" strokeWidth="0.7" opacity="0.58" />
-        <line x1="52" y1="32" x2="36" y2="10" stroke="#556838" strokeWidth="0.7" opacity="0.60" />
-        <line x1="52" y1="32" x2="46" y2="28" stroke="#556838" strokeWidth="0.7" opacity="0.58" />
-        <line x1="76" y1="34" x2="86" y2="18" stroke="#556838" strokeWidth="0.7" opacity="0.60" />
-        <line x1="84" y1="40" x2="100" y2="32" stroke="#556838" strokeWidth="0.7" opacity="0.60" />
-        <line x1="84" y1="40" x2="90" y2="10" stroke="#556838" strokeWidth="0.7" opacity="0.55" />
-        {/* Flower dots */}
-        {flowers.map(([x, y, r], i) => (
-          <circle
-            key={i}
-            cx={x} cy={y} r={r}
-            fill={fills[i % fills.length]}
-            opacity={0.88}
-          />
-        ))}
+        <path
+           d="M 30 2 C 43 1 59 13 58 29 C 57 45 46 59 30 58 C 14 57 2 46 2 30 C 2 14 16 3 30 2 Z"
+           fill="none" stroke="rgba(255,220,100,0.6)" strokeWidth="1.5"
+        />
+        <circle cx="30" cy="30" r="22" fill="none" stroke="rgba(100,70,0,0.4)" strokeWidth="2" style={{ mixBlendMode: "multiply" }} />
+        <circle cx="30" cy="30" r="21" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
       </svg>
+      {/* Stamped Monogram */}
+      <span
+        style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: "6cqi",
+          color: "#ffe55c", // Bright gold highlight
+          fontWeight: 700,
+          textShadow: "-1px -1px 1px rgba(255,255,255,0.4), 1px 1px 2px rgba(80,60,0,0.9)",
+          zIndex: 1,
+        }}
+      >
+        {WEDDING.groom.charAt(0)}{WEDDING.bride.charAt(0)}
+      </span>
     </div>
   );
 }
