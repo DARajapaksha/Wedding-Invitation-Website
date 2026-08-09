@@ -1,0 +1,10 @@
+{
+  "description": "Effortlessly send personalized wedding invitations via WhatsApp with a sleek mobile-friendly design and manage guest responses through an integrated form linked to Google Sheets.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
