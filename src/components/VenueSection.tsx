@@ -17,7 +17,7 @@ export default function VenueSection() {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-xl">
+      <div className="relative z-10 mx-auto max-w-xl rounded-2xl bg-background/85 p-10 shadow-xl backdrop-blur-md sm:p-14">
         <h2 className="mb-4 font-serif text-3xl font-light text-foreground md:text-4xl">
           When & Where
         </h2>

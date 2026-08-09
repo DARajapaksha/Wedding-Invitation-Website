@@ -91,7 +91,7 @@ export default function RSVPForm() {
 
   return (
     <section id="rsvp" className="px-6 py-20">
-      <div className="mx-auto max-w-md">
+      <div className="mx-auto max-w-md rounded-2xl bg-background/85 p-8 shadow-xl backdrop-blur-md sm:p-12">
         <div className="text-center">
           <p className="text-[10px] font-medium tracking-[0.35em] text-muted-foreground uppercase">
             Kindly respond
@@ -124,7 +124,7 @@ export default function RSVPForm() {
               type="tel"
               inputMode="tel"
               className={inputClass}
-              placeholder="+1 555 123 4567"
+              placeholder="+94 77 123 4567"
               value={form.whatsapp}
               onChange={(e) => update("whatsapp", e.target.value)}
             />
@@ -139,7 +139,7 @@ export default function RSVPForm() {
               type="tel"
               inputMode="tel"
               className={inputClass}
-              placeholder="+1 555 987 6543"
+              placeholder="+94 71 987 6543"
               value={form.mobile}
               onChange={(e) => update("mobile", e.target.value)}
             />

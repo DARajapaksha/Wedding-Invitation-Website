@@ -15,20 +15,20 @@
 //    digits only, no "+" (e.g. 15551234567).
 
 export const SHEET_URL =
-  "https://script.google.com/macros/s/PASTE_YOUR_DEPLOYMENT_ID/exec";
+  "https://script.google.com/macros/s/AKfycbx0-NMmlSDsG4AV0V5LcfUiLzClse0ajtDqFynUaL97N_Xm0GGO1JaH-bXx3U8POL6s/exec";
 
-export const WHATSAPP_NUMBER = "15551234567";
+export const WHATSAPP_NUMBER = "94711371983";
 
 // Couple / event details
 export const WEDDING = {
-  groom: "Aarav",
-  bride: "Meera",
+  groom: "Kasun",
+  bride: "Nimesha",
   dateLabel: "Saturday, the fourteenth of February",
   year: "2026",
-  timeLabel: "Half past six in the evening",
-  venue: "The Rosewood Pavilion",
-  location: "Udaipur, Rajasthan",
-  mapUrl: "https://maps.google.com/?q=Udaipur+Rajasthan",
+  timeLabel: "Half past nine in the morning",
+  venue: "Cinnamon Grand",
+  location: "Colombo, Sri Lanka",
+  mapUrl: "https://maps.google.com/?q=Cinnamon+Grand+Colombo",
 };
 
 // Message pre-filled into WhatsApp after a successful RSVP.
@@ -37,6 +37,14 @@ export function buildWhatsAppMessage(name: string) {
     `Hello! This is ${name}. ` +
     `I just confirmed my RSVP for ${WEDDING.groom} & ${WEDDING.bride}'s wedding. ` +
     `Looking forward to celebrating with you!`
+  );
+}
+
+// Message pre-filled into WhatsApp by the Admin to confirm the RSVP.
+export function buildAdminConfirmationMessage(name: string, cancelLink: string) {
+  return (
+    `Hi ${name}, we're so excited you can make it to our wedding! ` +
+    `We have received your RSVP. If your plans change, you can cancel your RSVP here: ${cancelLink}`
   );
 }
 

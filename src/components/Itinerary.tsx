@@ -1,30 +1,30 @@
 const EVENTS = [
   {
-    time: "4:00 PM",
-    title: "Welcome Drinks",
-    description: "Join us for a refreshing beverage before the ceremony begins.",
+    time: "8:30 AM",
+    title: "Arrival of Guests",
+    description: "Welcome drinks and gathering before the traditional ceremonies begin.",
   },
   {
-    time: "5:00 PM",
-    title: "The Ceremony",
-    description: "The exchange of vows at the Rosewood Garden.",
+    time: "9:30 AM",
+    title: "Poruwa Ceremony",
+    description: "The traditional Sinhalese wedding ceremony filled with ancient customs and rituals.",
   },
   {
-    time: "6:30 PM",
-    title: "Cocktail Hour",
-    description: "Canapés and signature cocktails on the terrace.",
+    time: "10:30 AM",
+    title: "Lighting of the Oil Lamp",
+    description: "A symbol of hope, prosperity, and the start of our new life together.",
   },
   {
-    time: "8:00 PM",
-    title: "Dinner & Dancing",
-    description: "A night of celebration, good food, and great music in the Grand Pavilion.",
+    time: "12:30 PM",
+    title: "Wedding Feast & Dancing",
+    description: "Join us for a grand lunch buffet and an afternoon of celebration and dancing.",
   },
 ];
 
 export default function Itinerary() {
   return (
-    <section className="bg-background px-6 py-24">
-      <div className="mx-auto max-w-xl">
+    <section className="bg-transparent px-6 py-24">
+      <div className="mx-auto max-w-xl rounded-2xl bg-background/85 p-10 shadow-xl backdrop-blur-md sm:p-14">
         <div className="mb-16 text-center">
           <h2 className="mb-4 font-serif text-3xl font-light text-foreground md:text-4xl">
             Order of Events

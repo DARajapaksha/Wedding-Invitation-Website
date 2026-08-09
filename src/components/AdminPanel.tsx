@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { SHEET_URL } from "../config";
+import { SHEET_URL, buildAdminConfirmationMessage } from "../config";
 
 type Row = {
   row: number;
@@ -43,10 +43,7 @@ export default function AdminPanel({ onExit }: { onExit: () => void }) {
     if (!confirm("Delete this RSVP entry?")) return;
     setDeleting(row);
     try {
-      await fetch(`${SHEET_URL}?action=delete&row=${row}`, {
-        method: "POST",
-        mode: "no-cors",
-      });
+      await fetch(`${SHEET_URL}?action=delete&row=${row}`);
       // Optimistically drop it; row numbers below shift, so reload after.
       setRows((r) => r.filter((x) => x.row !== row));
       setTimeout(load, 600);
@@ -143,14 +140,39 @@ export default function AdminPanel({ onExit }: { onExit: () => void }) {
                     ? "Attending"
                     : "Declined"}
                 </span>
-                <button
-                  type="button"
-                  onClick={() => remove(r.row)}
-                  disabled={deleting === r.row}
-                  className="text-xs tracking-[0.15em] text-accent uppercase underline-offset-4 hover:underline disabled:opacity-50"
-                >
-                  {deleting === r.row ? "Deleting…" : "Delete"}
-                </button>
+                <div className="mt-1 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Only send if a whatsapp number is provided
+                      if (!r.whatsapp) {
+                        alert("No WhatsApp number provided for this guest.");
+                        return;
+                      }
+                      
+                      const cancelLink = `${window.location.origin}${window.location.pathname}#/cancel?row=${r.row}`;
+                      const msg = buildAdminConfirmationMessage(r.name, cancelLink);
+                      
+                      // Format number: ensure it only has digits
+                      const cleanNumber = String(r.whatsapp).replace(/\D/g, "");
+                      window.open(
+                        `https://wa.me/${cleanNumber}?text=${encodeURIComponent(msg)}`,
+                        "_blank"
+                      );
+                    }}
+                    className="text-xs tracking-[0.15em] text-primary uppercase underline-offset-4 hover:underline"
+                  >
+                    Confirm via WA
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => remove(r.row)}
+                    disabled={deleting === r.row}
+                    className="text-xs tracking-[0.15em] text-accent uppercase underline-offset-4 hover:underline disabled:opacity-50"
+                  >
+                    {deleting === r.row ? "Deleting…" : "Delete"}
+                  </button>
+                </div>
               </div>
             </div>
             {r.message && (

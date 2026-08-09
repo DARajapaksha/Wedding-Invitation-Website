@@ -128,6 +128,8 @@ export default function Envelope() {
               opacity: envelopeOpacity,
             }}
           >
+            {/* Elegant Background Texture for the inside */}
+            <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(193, 162, 107, 0.05) 10px, rgba(193, 162, 107, 0.05) 11px)" }} />
             {/* Inner shadows for depth */}
             <div style={{ position: "absolute", inset: 0, boxShadow: "inset 0 0 20px rgba(0,0,0,0.8)" }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.5) 100%)" }} />
@@ -200,13 +202,26 @@ export default function Envelope() {
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(to right, #9e1c25 0%, #7a141b 100%)",
+                background: "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(193, 162, 107, 0.035) 10px, rgba(193, 162, 107, 0.035) 11px), linear-gradient(to right, #9e1c25 0%, #7a141b 100%)",
                 backfaceVisibility: "hidden",
                 borderTopLeftRadius: 3,
                 borderBottomLeftRadius: 3,
                 boxShadow: "2px 0 10px rgba(0,0,0,0.4)", // Shadow cast onto the right flap
               }}
             >
+              {/* Elegant Gold Borders */}
+              <div style={{ position: "absolute", top: "4%", bottom: "4%", left: "6%", right: "2%", border: "1px solid rgba(193, 162, 107, 0.4)", borderTopLeftRadius: "2px", borderBottomLeftRadius: "2px" }}>
+                 <div style={{ position: "absolute", top: "4px", bottom: "4px", left: "4px", right: "4px", border: "1px solid rgba(193, 162, 107, 0.2)", borderTopLeftRadius: "1px", borderBottomLeftRadius: "1px" }} />
+              </div>
+              
+              {/* Corner decorative dots */}
+              <div style={{ position: "absolute", top: "4%", left: "6%", width: "3px", height: "3px", background: "#c1a26b", borderRadius: "50%", transform: "translate(-1.5px, -1.5px)" }} />
+              <div style={{ position: "absolute", bottom: "4%", left: "6%", width: "3px", height: "3px", background: "#c1a26b", borderRadius: "50%", transform: "translate(-1.5px, 1.5px)" }} />
+              
+              {/* Floral Ornaments */}
+              <FloralCorner style={{ position: "absolute", top: "4%", left: "6%", width: "25%", color: "rgba(193, 162, 107, 0.45)", transform: "scaleY(-1)" }} />
+              <FloralCorner style={{ position: "absolute", bottom: "4%", left: "6%", width: "25%", color: "rgba(193, 162, 107, 0.45)" }} />
+
               <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "1px", background: "rgba(255,255,255,0.2)" }} />
             </div>
             
@@ -248,13 +263,26 @@ export default function Envelope() {
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(to left, #9e1c25 0%, #85161d 100%)",
+                background: "repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(193, 162, 107, 0.035) 10px, rgba(193, 162, 107, 0.035) 11px), linear-gradient(to left, #9e1c25 0%, #85161d 100%)",
                 backfaceVisibility: "hidden",
                 borderTopRightRadius: 3,
                 borderBottomRightRadius: 3,
               }}
             >
                <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.15)" }} /> {/* Slightly darker as it sits underneath */}
+               
+               {/* Elegant Gold Borders */}
+               <div style={{ position: "absolute", top: "4%", bottom: "4%", left: "2%", right: "6%", border: "1px solid rgba(193, 162, 107, 0.4)", borderTopRightRadius: "2px", borderBottomRightRadius: "2px" }}>
+                  <div style={{ position: "absolute", top: "4px", bottom: "4px", left: "4px", right: "4px", border: "1px solid rgba(193, 162, 107, 0.2)", borderTopRightRadius: "1px", borderBottomRightRadius: "1px" }} />
+               </div>
+               
+               {/* Corner decorative dots */}
+               <div style={{ position: "absolute", top: "4%", right: "6%", width: "3px", height: "3px", background: "#c1a26b", borderRadius: "50%", transform: "translate(1.5px, -1.5px)" }} />
+               <div style={{ position: "absolute", bottom: "4%", right: "6%", width: "3px", height: "3px", background: "#c1a26b", borderRadius: "50%", transform: "translate(1.5px, 1.5px)" }} />
+               
+               {/* Floral Ornaments */}
+               <FloralCorner style={{ position: "absolute", top: "4%", right: "6%", width: "25%", color: "rgba(193, 162, 107, 0.45)", transform: "scale(-1, -1)" }} />
+               <FloralCorner style={{ position: "absolute", bottom: "4%", right: "6%", width: "25%", color: "rgba(193, 162, 107, 0.45)", transform: "scaleX(-1)" }} />
             </div>
             
             {/* Back Face (Inner Gold Liner) */}
@@ -346,5 +374,30 @@ function WaxSeal() {
         {WEDDING.groom.charAt(0)}{WEDDING.bride.charAt(0)}
       </span>
     </div>
+  );
+}
+
+function FloralCorner({ className, style }: { className?: string, style?: React.CSSProperties }) {
+  return (
+    <svg
+      className={className}
+      style={style}
+      viewBox="0 0 120 120"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M0,120 C30,90 40,50 90,30" />
+      <path d="M25,95 C15,75 30,60 40,70 C35,80 30,85 25,95 Z" />
+      <path d="M50,70 C40,50 60,40 70,50 C60,60 55,65 50,70 Z" />
+      <path d="M75,45 C70,25 90,10 100,20 C90,30 85,35 75,45 Z" />
+      <path d="M15,105 C5,100 0,85 10,80 C15,90 15,95 15,105 Z" />
+      <circle cx="100" cy="35" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="110" cy="45" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="90" cy="25" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
   );
 }
