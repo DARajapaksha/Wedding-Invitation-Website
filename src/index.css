@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap');
 @import 'tailwindcss';
 
 :root {
@@ -6,17 +6,28 @@
   --foreground: #3a342e;
   --card: #ffffff;
   --card-foreground: #3a342e;
-  --primary: #c1a26b; /* soft gold */
+
+  /* Gold palette */
+  --primary: #c1a26b;
   --primary-foreground: #ffffff;
-  --secondary: #e8dfd8; /* soft dusty rose */
+  --gold-light: #e8d5a3;
+  --gold-mid: #c1a26b;
+  --gold-dark: #8b6914;
+  --gold-shimmer: linear-gradient(90deg, #8b6914 0%, #e8d5a3 40%, #c1a26b 60%, #8b6914 100%);
+
+  /* Muted tones */
+  --secondary: #ede5dc;
   --secondary-foreground: #5c4e46;
   --muted: #f2ece6;
   --muted-foreground: #948679;
-  --accent: #b8868c; /* muted rose accent */
+  --accent: #b8868c;
   --accent-foreground: #ffffff;
   --border: #e2d7cc;
   --ring: #c1a26b;
   --radius: 0.25rem;
+
+  /* Cream */
+  --cream: #fdf9f3;
 }
 
 @theme inline {
@@ -37,10 +48,191 @@
   --radius: var(--radius);
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Montserrat', system-ui, sans-serif;
+  --font-script: 'Great Vibes', cursive;
 }
 
-html {
-  scroll-behavior: smooth;
+/* ── Keyframes ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes chevronBounce {
+  0%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.6; }
+  50%       { transform: translateY(6px) rotate(45deg); opacity: 1; }
+}
+
+@keyframes lineDraw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes diamondSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Utility classes ── */
+.font-script { font-family: var(--font-script); }
+
+.gold-text {
+  background: var(--gold-shimmer);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.2s ease both;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: floatBob 4s ease-in-out infinite;
+}
+
+/* ── Stagger helpers ── */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* ── Gold divider ── */
+.gold-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+.gold-rule::before,
+.gold-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-mid), transparent);
+}
+.gold-rule-diamond::before,
+.gold-rule-diamond::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-mid) 40%, transparent);
+}
+
+/* ── Card glass ── */
+.glass-card {
+  background: rgba(255, 252, 247, 0.82);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(193, 162, 107, 0.22);
+  box-shadow:
+    0 8px 32px rgba(139, 105, 20, 0.10),
+    0 2px 8px rgba(0,0,0,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+/* ── Input elegance ── */
+.elegant-input {
+  width: 100%;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  letter-spacing: 0.03em;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.elegant-input::placeholder {
+  color: var(--muted-foreground);
+  opacity: 0.7;
+}
+.elegant-input:focus {
+  border-color: var(--gold-mid);
+  box-shadow: 0 0 0 3px rgba(193, 162, 107, 0.18), 0 1px 4px rgba(193,162,107,0.12);
+}
+
+/* ── Gold button ── */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #b8943f 0%, #dfc06e 40%, #c1a26b 70%, #9a7a30 100%);
+  background-size: 200% auto;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  padding: 0.9rem 2.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-position 0.5s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(139,105,20,0.25), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.btn-gold:hover {
+  background-position: right center;
+  box-shadow: 0 6px 24px rgba(139,105,20,0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+  transform: translateY(-1px);
+}
+.btn-gold:active {
+  transform: translateY(0);
+}
+.btn-gold:disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ── Scrollbar ── */
+html { scroll-behavior: smooth; }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--gold-light), var(--gold-mid));
+  border-radius: 3px;
 }
 
 body {
@@ -49,18 +241,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
   background: var(--secondary);
   color: var(--secondary-foreground);
-}
-
-/* Hide scrollbars until scrolling */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-*:hover {
-  scrollbar-color: var(--border) transparent;
 }

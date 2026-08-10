@@ -35,7 +35,7 @@ export const WEDDING = {
 export function buildWhatsAppMessage(name: string) {
   return (
     `Hello! This is ${name}. ` +
-    `I just confirmed my RSVP for ${WEDDING.groom} & ${WEDDING.bride}'s wedding. ` +
+    `I just confirmed my RSVP for ${WEDDING.bride} & ${WEDDING.groom}'s wedding. ` +
     `Looking forward to celebrating with you!`
   );
 }

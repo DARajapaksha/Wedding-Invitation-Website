@@ -23,59 +23,117 @@ const EVENTS = [
 
 export default function Itinerary() {
   return (
-    <section className="bg-transparent px-6 py-24">
-      <div className="mx-auto max-w-xl rounded-2xl bg-background/85 p-10 shadow-xl backdrop-blur-md sm:p-14">
+    <section
+      className="relative px-6 py-28"
+      style={{
+        backgroundImage: "url('/images/3.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center bottom",
+      }}
+    >
+      {/* Layered overlays (neutral, no red tint) */}
+      <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.5) 100%)" }} />
+      <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.45) 100%)" }} />
+
+      <div className="relative z-10 mx-auto max-w-2xl animate-fade-in-up delay-100">
+
+        {/* Heading block */}
         <div className="mb-16 text-center">
-          <h2 className="mb-4 font-serif text-3xl font-light text-foreground md:text-4xl">
+          <p style={{ fontSize: "9px", letterSpacing: "0.45em", textTransform: "uppercase", color: "rgba(225,210,170,0.7)", fontFamily: "'Montserrat', sans-serif", marginBottom: "0.75rem" }}>
+            The Celebration
+          </p>
+          <h2 style={{ fontFamily: "'Great Vibes', cursive", fontSize: "clamp(2.5rem, 7vw, 4rem)", color: "#fff", lineHeight: 1.1, marginBottom: "1.5rem" }}>
             Order of Events
           </h2>
-          <div className="mx-auto h-px w-16 bg-primary/40" />
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "0 auto", maxWidth: "180px" }}>
+            <div style={{ flex: 1, height: "0.5px", background: "linear-gradient(to right, transparent, rgba(193,162,107,0.8))" }} />
+            <svg width="7" height="7" viewBox="0 0 7 7" fill="rgba(193,162,107,0.9)" aria-hidden><rect x="1" y="1" width="5" height="5" transform="rotate(45 3.5 3.5)"/></svg>
+            <div style={{ flex: 1, height: "0.5px", background: "linear-gradient(to left, transparent, rgba(193,162,107,0.8))" }} />
+          </div>
         </div>
 
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute top-2 bottom-2 left-[27px] w-px bg-border md:left-1/2 md:-ml-[0.5px]" />
+        {/* Glass card */}
+        <div className="rounded-2xl p-10 sm:p-14" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", border: "1px solid rgba(212,185,130,0.4)", boxShadow: "0 10px 40px rgba(0,0,0,0.15)" }}>
+          <div className="relative">
+            {/* Elegant continuous vertical gold line — desktop only */}
+            <div
+              className="absolute top-2 bottom-2 hidden md:block"
+              style={{
+                left: "calc(50% - 0.5px)",
+                width: "1px",
+                background: "linear-gradient(to bottom, transparent, rgba(193,162,107,0.7) 15%, rgba(193,162,107,0.7) 85%, transparent)",
+              }}
+            />
+            {/* Mobile vertical line */}
+            <div
+              className="absolute top-2 bottom-2 md:hidden"
+              style={{
+                left: "22px",
+                width: "1px",
+                background: "linear-gradient(to bottom, transparent, rgba(193,162,107,0.7) 15%, rgba(193,162,107,0.7) 85%, transparent)",
+              }}
+            />
 
-          <div className="space-y-12">
-            {EVENTS.map((event, idx) => (
-              <div
-                key={event.title}
-                className={`relative flex items-start gap-8 md:justify-between ${
-                  idx % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"
-                }`}
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-[24px] top-1 h-2 w-2 rounded-full bg-primary ring-4 ring-background md:left-1/2 md:-ml-1 md:top-2" />
+            <div className="space-y-16">
+              {EVENTS.map((event, idx) => (
+                <div
+                  key={event.title}
+                  className={`relative flex items-start md:items-center gap-8 md:justify-between animate-fade-in-up ${
+                    idx % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"
+                  }`}
+                  style={{ animationDelay: `${idx * 150 + 100}ms` }}
+                >
+                  {/* Gold diamond dot — mobile only */}
+                  <div
+                    className="absolute md:hidden"
+                    style={{
+                      left: "18px",
+                      top: "16px",
+                      width: "9px", height: "9px",
+                      background: "linear-gradient(135deg, #e8d4a0, #c4a55a)",
+                      transform: "rotate(45deg)",
+                      boxShadow: "0 0 10px rgba(193,162,107,0.6)",
+                    }}
+                  />
+                  {/* Desktop diamond dot */}
+                  <div
+                    className="absolute hidden md:block"
+                    style={{
+                      left: "calc(50% - 4.5px)",
+                      top: "50%",
+                      width: "9px", height: "9px",
+                      background: "linear-gradient(135deg, #e8d4a0, #c4a55a)",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      boxShadow: "0 0 12px rgba(193,162,107,0.8)",
+                    }}
+                  />
 
-                {/* Desktop time spacer */}
-                <div className="hidden w-1/2 text-right md:block md:w-[calc(50%-3rem)]">
-                  <p
-                    className={`font-serif text-2xl italic text-primary ${
-                      idx % 2 === 0 ? "text-left" : "text-right"
+                  {/* Desktop time */}
+                  <div className={`hidden w-1/2 md:block md:w-[calc(50%-4rem)] ${idx % 2 === 0 ? "text-left" : "text-right"}`}>
+                    <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2.4rem", color: "#b38936", lineHeight: 1, textShadow: "0 1px 2px rgba(0,0,0,0.03)" }}>
+                      {event.time}
+                    </p>
+                  </div>
+
+                  {/* Content */}
+                  <div
+                    className={`flex-1 pl-16 md:w-[calc(50%-4rem)] md:flex-none md:pl-0 ${
+                      idx % 2 === 0 ? "md:text-right" : "md:text-left"
                     }`}
                   >
-                    {event.time}
-                  </p>
+                    <p className="mb-2 md:hidden" style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2rem", color: "#b38936", lineHeight: 1 }}>
+                      {event.time}
+                    </p>
+                    <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.7rem", color: "#3a2a10", marginBottom: "0.5rem", fontWeight: 500, letterSpacing: "0.02em" }}>
+                      {event.title}
+                    </h3>
+                    <p style={{ fontSize: "14px", fontWeight: 400, lineHeight: 1.7, letterSpacing: "0.03em", color: "#5c4b37" }}>
+                      {event.description}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Content */}
-                <div
-                  className={`flex-1 pl-16 md:w-[calc(50%-3rem)] md:flex-none md:pl-0 ${
-                    idx % 2 === 0 ? "md:text-right" : "md:text-left"
-                  }`}
-                >
-                  <p className="mb-2 block font-serif text-2xl italic text-primary md:hidden">
-                    {event.time}
-                  </p>
-                  <h3 className="mb-3 font-serif text-2xl text-foreground">
-                    {event.title}
-                  </h3>
-                  <p className="text-[13px] font-light leading-relaxed tracking-wide text-muted-foreground">
-                    {event.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
