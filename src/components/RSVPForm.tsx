@@ -88,7 +88,7 @@ export default function RSVPForm() {
               <svg width="6" height="6" viewBox="0 0 6 6" fill="var(--gold-mid)" aria-hidden><rect x="1" y="1" width="4" height="4" transform="rotate(45 3 3)"/></svg>
               <div style={{ flex: 1, height: "0.5px", background: "linear-gradient(to left, transparent, var(--gold-mid))" }} />
             </div>
-            <p style={{ fontSize: "13px", fontWeight: 300, lineHeight: 1.9, color: "var(--muted-foreground)", letterSpacing: "0.02em", fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "1.05rem" }}>
+            <p style={{ fontWeight: 300, lineHeight: 1.9, color: "var(--muted-foreground)", letterSpacing: "0.02em", fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "1.05rem" }}>
               Your RSVP has been received. We've opened WhatsApp so you can send your warm wishes — we can't wait to celebrate with you.
             </p>
             <button
@@ -198,7 +198,7 @@ export default function RSVPForm() {
                 checked={form.attending}
                 onChange={(e) => update("attending", e.target.checked)}
               />
-              <span style={{ fontSize: "13px", color: "var(--foreground)", fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "1rem" }}>
+              <span style={{ color: "var(--foreground)", fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "1rem" }}>
                 I will joyfully attend
               </span>
             </label>
