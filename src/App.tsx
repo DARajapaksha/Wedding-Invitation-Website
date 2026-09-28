@@ -67,6 +67,7 @@ export default function App() {
 
       {/* Background Video Layer */}
       <div className="fixed inset-0 z-0">
+        <div className="backdrop-fallback" aria-hidden="true" />
         <video
           autoPlay loop muted playsInline
           className="h-full w-full object-cover"
@@ -74,6 +75,7 @@ export default function App() {
         >
           <source src="/videos/aisle.webm" type="video/webm" />
         </video>
+        <div className="burgundy-backdrop-tint" aria-hidden="true" />
         {/* Dreamy multi-layer overlay */}
         <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,5,3,0.28) 0%, rgba(15,8,5,0.18) 40%, rgba(10,5,3,0.22) 100%)" }} />
         <div className="absolute inset-0" style={{ backdropFilter: "blur(3px) saturate(120%)", WebkitBackdropFilter: "blur(3px) saturate(120%)" }} />
@@ -84,6 +86,11 @@ export default function App() {
 
       {/* Main content */}
       <div className="relative z-10 bg-transparent pb-0">
+        <div className="post-envelope-ornaments" aria-hidden="true">
+          <img className="ornament-flower ornament-flower-left" src="/images/flowers.png" alt="" />
+          <img className="ornament-flower ornament-flower-right" src="/images/flowers.png" alt="" />
+          <img className="ornament-frame" src="/images/frame.png" alt="" />
+        </div>
         <Petals />
         <InvitationCard />
         <VenueSection />
