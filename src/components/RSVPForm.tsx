@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { SHEET_URL, WHATSAPP_NUMBER, buildWhatsAppMessage } from "../config";
+import Petals from "./Petals";
 
 type Status = "idle" | "submitting" | "done" | "error";
 
@@ -73,6 +74,7 @@ export default function RSVPForm() {
         className="relative px-6 py-28"
         style={{ backgroundImage: "url('/images/4.png')", backgroundSize: "cover", backgroundPosition: "center top" }}
       >
+        <Petals burst />
         <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(245,240,232,0.5), rgba(245,240,232,0.5))" }} />
         <div className="relative z-10 mx-auto max-w-md text-center animate-fade-in-up">
           <div

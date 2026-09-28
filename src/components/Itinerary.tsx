@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 const EVENTS = [
   {
     time: "8:30 AM",
@@ -22,6 +24,26 @@ const EVENTS = [
 ];
 
 export default function Itinerary() {
+  const rowRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [visibleRows, setVisibleRows] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      setVisibleRows((current) => {
+        const next = new Set(current);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = rowRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (index >= 0) next.add(index);
+          }
+        });
+        return next;
+      });
+    }, { threshold: 0.2, rootMargin: "0px 0px -8%" });
+    rowRefs.current.forEach((row) => row && observer.observe(row));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       className="relative px-6 py-28"
@@ -78,14 +100,15 @@ export default function Itinerary() {
               {EVENTS.map((event, idx) => (
                 <div
                   key={event.title}
-                  className={`relative flex items-start md:items-center gap-8 md:justify-between animate-fade-in-up ${
+                  ref={(element) => { rowRefs.current[idx] = element; }}
+                  className={`itinerary-row relative flex items-start md:items-center gap-8 md:justify-between ${visibleRows.has(idx) ? "is-visible" : ""} ${
                     idx % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"
                   }`}
-                  style={{ animationDelay: `${idx * 150 + 100}ms` }}
+                  style={{ "--row-delay": `${idx * 120}ms` } as React.CSSProperties}
                 >
                   {/* Gold diamond dot — mobile only */}
                   <div
-                    className="absolute md:hidden"
+                    className={`itinerary-dot absolute md:hidden ${visibleRows.has(idx) ? "is-visible" : ""}`}
                     style={{
                       left: "18px",
                       top: "16px",
@@ -97,7 +120,7 @@ export default function Itinerary() {
                   />
                   {/* Desktop diamond dot */}
                   <div
-                    className="absolute hidden md:block"
+                    className={`itinerary-dot absolute hidden md:block ${visibleRows.has(idx) ? "is-visible" : ""}`}
                     style={{
                       left: "calc(50% - 4.5px)",
                       top: "50%",

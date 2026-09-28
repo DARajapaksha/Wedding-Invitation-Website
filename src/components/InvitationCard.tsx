@@ -1,4 +1,6 @@
-import { WEDDING } from "../config";
+import { useEffect, useRef } from "react";
+import { getDateParts, WEDDING } from "../config";
+import Countdown from "./Countdown";
 
 /** Elegant floral divider SVG */
 function FloralDivider() {
@@ -33,9 +35,21 @@ function GoldDiamond() {
 }
 
 export default function InvitationCard() {
+  const cardRef = useRef<HTMLElement>(null);
+  const dateParts = getDateParts();
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const tilt = (event: PointerEvent) => { if (reduced.matches) return; const rect = card.getBoundingClientRect(); card.style.setProperty("--tilt-x", `${((event.clientY - rect.top) / rect.height - 0.5) * -5}deg`); card.style.setProperty("--tilt-y", `${((event.clientX - rect.left) / rect.width - 0.5) * 5}deg`); };
+    const reset = () => { card.style.setProperty("--tilt-x", "0deg"); card.style.setProperty("--tilt-y", "0deg"); };
+    card.addEventListener("pointermove", tilt); card.addEventListener("pointerleave", reset);
+    return () => { card.removeEventListener("pointermove", tilt); card.removeEventListener("pointerleave", reset); };
+  }, []);
   return (
     <section
-      className="relative mx-auto my-16 max-w-[90vw] w-[480px] sm:my-24 animate-fade-in-up delay-100"
+      ref={cardRef}
+      className="paper-card relative mx-auto my-16 max-w-[90vw] w-[480px] sm:my-24 animate-fade-in-up delay-100"
       style={{
         backgroundImage: "url('/images/2.png')",
         backgroundSize: "cover",
@@ -70,7 +84,7 @@ export default function InvitationCard() {
               </p>
 
               {/* Couple names in Great Vibes */}
-              <h1 style={{
+              <h1 className="hero-names" style={{
                 fontFamily: "'Great Vibes', cursive",
                 fontSize: "clamp(2.8rem, 8vw, 4.2rem)",
                 color: "var(--foreground)",
@@ -104,17 +118,19 @@ export default function InvitationCard() {
               <FloralDivider />
 
               {/* Date */}
-              <div className="flex flex-col items-center gap-3">
+              <div className="date-display">
                 <span style={{ fontSize: "9px", fontWeight: 500, letterSpacing: "0.35em", color: "var(--muted-foreground)", textTransform: "uppercase" }}>— The Date —</span>
-                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.25rem", color: "var(--foreground)", letterSpacing: "0.08em", fontStyle: "italic" }}>
-                  {WEDDING.dateLabel}
-                </span>
-                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1rem", color: "var(--primary)", letterSpacing: "0.1em" }}>
+                <span className="date-weekday">{dateParts.weekday}</span>
+                <span className="date-day">{dateParts.day}</span>
+                <span className="date-month">{dateParts.month} {dateParts.year}</span>
+                <span className="date-time">
                   {WEDDING.timeLabel}
                 </span>
               </div>
 
               <GoldDiamond />
+
+              <Countdown />
 
               {/* Venue */}
               <div className="flex flex-col items-center gap-2">

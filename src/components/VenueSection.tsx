@@ -1,6 +1,7 @@
-import { WEDDING } from "../config";
+import { getDateParts, WEDDING } from "../config";
 
 export default function VenueSection() {
+  const dateParts = getDateParts();
   return (
     <section
       className="relative overflow-hidden px-6 py-28 text-center"
@@ -42,14 +43,14 @@ export default function VenueSection() {
           <div className="space-y-10">
 
             {/* Date & Time */}
-            <div className="space-y-3">
+            <div className="date-display venue-date-display">
               <p style={{ fontSize: "9px", fontWeight: 500, letterSpacing: "0.35em", textTransform: "uppercase", color: "var(--muted-foreground)" }}>
                 Date &amp; Time
               </p>
-              <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2rem", color: "var(--primary)", lineHeight: 1.2 }}>
-                {WEDDING.dateLabel}
-              </p>
-              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontStyle: "italic", color: "var(--foreground)", letterSpacing: "0.06em" }}>
+              <p className="date-weekday">{dateParts.weekday}</p>
+              <p className="date-day">{dateParts.day}</p>
+              <p className="date-month">{dateParts.month} {dateParts.year}</p>
+              <p className="date-time">
                 {WEDDING.timeLabel}
               </p>
             </div>

@@ -15,7 +15,7 @@
 //    digits only, no "+" (e.g. 15551234567).
 
 export const SHEET_URL =
-  "https://script.google.com/macros/s/AKfycbx0-NMmlSDsG4AV0V5LcfUiLzClse0ajtDqFynUaL97N_Xm0GGO1JaH-bXx3U8POL6s/exec";
+  "https://script.google.com/macros/s/AKfycbxiTWGz1BuLKLNJJm1QOkPzXlZfEgQ4nOKMTiiu77fplz69Gft64vbmdAFqTyp2o6I/exec";
 
 export const WHATSAPP_NUMBER = "94711371983";
 
@@ -23,13 +23,31 @@ export const WHATSAPP_NUMBER = "94711371983";
 export const WEDDING = {
   groom: "Kasun",
   bride: "Nimesha",
-  dateLabel: "Saturday, the fourteenth of February",
+  dateISO: "2026-12-20T09:30:00+05:30",
+  endISO: "2026-12-20T15:00:00+05:30",
+  dateLabel: "Sunday, the twentieth of December",
   year: "2026",
   timeLabel: "Half past nine in the morning",
   venue: "Cinnamon Grand",
   location: "Colombo, Sri Lanka",
   mapUrl: "https://maps.google.com/?q=Cinnamon+Grand+Colombo",
 };
+
+export function getDateParts() {
+  const date = new Date(WEDDING.dateISO);
+  return {
+    weekday: date.toLocaleDateString("en-GB", { weekday: "long", timeZone: "Asia/Colombo" }),
+    day: date.toLocaleDateString("en-GB", { day: "2-digit", timeZone: "Asia/Colombo" }),
+    month: date.toLocaleDateString("en-GB", { month: "long", timeZone: "Asia/Colombo" }),
+    year: date.toLocaleDateString("en-GB", { year: "numeric", timeZone: "Asia/Colombo" }),
+  };
+}
+
+export function buildCalendarUrl() {
+  const start = WEDDING.dateISO.replace(/[-:]/g, "").replace("+0530", "");
+  const end = WEDDING.endISO.replace(/[-:]/g, "").replace("+0530", "");
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`${WEDDING.bride} & ${WEDDING.groom}'s Wedding`)}&dates=${start}/${end}&details=${encodeURIComponent(WEDDING.location)}&location=${encodeURIComponent(WEDDING.venue)}`;
+}
 
 // Message pre-filled into WhatsApp after a successful RSVP.
 export function buildWhatsAppMessage(name: string) {

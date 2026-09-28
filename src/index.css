@@ -92,6 +92,12 @@
   to   { transform: rotate(360deg); }
 }
 
+@keyframes digitRoll { from { transform: translateY(-45%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes countdownShimmer { 0%, 65% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+@keyframes inkWipe { from { clip-path: inset(-25% 100% -25% -25%); } to { clip-path: inset(-25% -25% -25% -25%); } }
+@keyframes petalFall { from { transform: translate3d(0, -12vh, 0) rotateX(0) rotateY(0); opacity: 0; } 12% { opacity: .8; } to { transform: translate3d(calc((var(--i) - 6) * 8vw), 112vh, 0) rotateX(540deg) rotateY(360deg); opacity: 0; } }
+@keyframes dotPulse { 50% { box-shadow: 0 0 0 7px rgba(193,162,107,0.08), 0 0 18px rgba(193,162,107,0.9); } }
+
 /* ── Utility classes ── */
 .font-script { font-family: var(--font-script); }
 
@@ -119,6 +125,42 @@
 .animate-float {
   animation: floatBob 4s ease-in-out infinite;
 }
+
+.paper-card { --tilt-x: 0deg; --tilt-y: 0deg; transform: perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)); transition: transform .35s ease, box-shadow .35s ease; transform-style: preserve-3d; overflow: hidden; }
+.paper-card::before, .glass-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(232,213,163,.24), transparent 22%); opacity: .8; }
+.paper-card::after { content: ""; position: absolute; inset: -20%; pointer-events: none; background: linear-gradient(105deg, transparent 42%, rgba(255,239,184,.3) 50%, transparent 58%); transform: translateX(-120%); animation: countdownShimmer 6s ease-in-out infinite; }
+.hero-names { position: relative; z-index: 1; animation: inkWipe 1.7s cubic-bezier(.22,1,.36,1) .35s both; transform: translateZ(28px); }
+.countdown { position: relative; overflow: hidden; margin: 2rem auto 0; padding: 1.25rem .5rem .25rem; max-width: 390px; }
+.countdown::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(100deg, transparent 35%, rgba(232,213,163,.25) 50%, transparent 65%); transform: translateX(-120%); animation: countdownShimmer 5s ease-in-out infinite; }
+.countdown-kicker { margin: 0 0 1rem; font: italic 1rem 'Cormorant Garamond', serif; color: var(--muted-foreground); }
+.countdown-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(.3rem, 2vw, .65rem); align-items: start; justify-items: center; width: 100%; }
+.countdown-unit { display: grid; justify-items: center; align-content: start; gap: .45rem; min-width: 0; width: 100%; text-align: center; }
+.countdown-ring { --progress: 0deg; display: grid; place-items: center; width: clamp(54px, 15vw, 76px); aspect-ratio: 1; border-radius: 50%; background: conic-gradient(var(--gold-mid) var(--progress), rgba(193,162,107,.15) 0); padding: 2px; }
+.countdown-ring::before { content: ""; grid-area: 1/1; width: 100%; height: 100%; border-radius: 50%; background: var(--cream); }
+.countdown-digit { grid-area: 1/1; z-index: 1; font: 500 clamp(1.1rem, 4vw, 1.55rem) 'Cormorant Garamond', serif; color: var(--foreground); }
+.countdown-digit-changing { animation: digitRoll .42s cubic-bezier(.22,1,.36,1); }
+.countdown-label { font-size: 8px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted-foreground); }
+.itinerary-row { opacity: 0; transform: translateY(24px); transition: opacity 1s ease var(--row-delay), transform 1s cubic-bezier(.22,1,.36,1) var(--row-delay); }
+.itinerary-row.is-visible { opacity: 1; transform: translateY(0); }
+.itinerary-dot.is-visible { animation: dotPulse 2.4s ease-in-out .55s both; }
+.countdown-finished { font: italic 1.5rem 'Cormorant Garamond', serif; color: var(--primary); text-align: center; }
+.countdown-compact { margin: 0 auto 1.25rem; padding: 0; max-width: 270px; transform: scale(.78); transform-origin: top center; }
+.countdown-compact .countdown-grid { gap: .2rem; }
+.date-display { display: flex; flex-direction: column; align-items: center; gap: .2rem; }
+.date-weekday { margin-top: .25rem; font: italic 1.35rem 'Cormorant Garamond', serif; letter-spacing: .08em; color: var(--foreground); }
+.date-day { display: block; margin: .1rem 0 -.15rem; font: 500 clamp(3rem, 10vw, 4.5rem)/.9 'Cormorant Garamond', serif; color: var(--primary); letter-spacing: .02em; text-shadow: 0 2px 0 rgba(193,162,107,.12); }
+.date-month { font: italic 1.15rem 'Cormorant Garamond', serif; letter-spacing: .12em; color: var(--foreground); }
+.date-time { margin-top: .65rem; font: 1rem 'Cormorant Garamond', serif; letter-spacing: .1em; color: var(--primary); }
+.venue-date-display .date-day { font-size: 3.6rem; }
+.venue-date-display .date-weekday { font-size: 1.2rem; }
+.venue-date-display .date-time { margin-top: .4rem; }
+.petals { position: fixed; z-index: 60; inset: 0; overflow: hidden; pointer-events: none; }
+.petal { position: absolute; top: -8vh; left: calc(var(--i) * 9%); width: 8px; height: 13px; border-radius: 80% 20% 80% 20%; background: linear-gradient(135deg, #d9b86e, #f3dfb0); animation: petalFall calc(12s + var(--i) * .7s) linear infinite; animation-delay: calc(var(--i) * -1.8s); }
+.petals-burst .petal { animation-duration: 5s; animation-delay: calc(var(--i) * -.18s); background: linear-gradient(135deg, #dfc06e, #fff1c7); }
+.btn-gold { position: relative; overflow: hidden; }
+.btn-gold::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.35) 50%, transparent 65%); transform: translateX(-120%); transition: transform .6s ease; }
+.btn-gold:hover::after { transform: translateX(120%); }
+.btn-gold:hover { transform: translateY(-2px) scale(1.01); }
 
 /* ── Stagger helpers ── */
 .delay-100 { animation-delay: 100ms; }
@@ -247,4 +289,12 @@ body {
 ::selection {
   background: var(--secondary);
   color: var(--secondary-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  .paper-card { transform: none !important; }
+  .petals { display: none; }
+  .countdown-digit-changing { animation: none; }
+  .itinerary-row { opacity: 1; transform: none; }
 }
