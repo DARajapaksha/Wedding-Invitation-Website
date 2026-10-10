@@ -68,6 +68,15 @@ export default function App() {
     document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function openInvitation() {
+    setOpened(true);
+    setMusicOn(true);
+
+    if (WEDDING.music.enabled && audioRef.current) {
+      audioRef.current.play().catch(() => setMusicOn(false));
+    }
+  }
+
   if (isCancel) {
     return <CancelRSVP onExit={() => { window.location.hash = ''; setRoute(''); }} />;
   }
@@ -79,7 +88,11 @@ export default function App() {
   return (
     <main className="app-shell">
       <div className="scroll-line" aria-hidden="true" />
-      {!opened && <Envelope onOpen={() => setOpened(true)} />}
+      {!opened && <Envelope onOpen={openInvitation} />}
+
+      {WEDDING.music.enabled && (
+        <audio ref={audioRef} src={WEDDING.music.src} loop preload="auto" />
+      )}
 
       <div className={`invitation ${opened ? 'is-visible' : 'is-hidden'}`}>
         {opened && <ThreeScene />}
@@ -94,7 +107,6 @@ export default function App() {
 
         {WEDDING.music.enabled && (
           <>
-            <audio ref={audioRef} src={WEDDING.music.src} loop preload="none" />
             <button className="music-button" type="button" onClick={() => setMusicOn((value) => !value)} aria-label={musicOn ? 'Pause music' : 'Play music'}>
               <span className={`music-bars ${musicOn ? 'playing' : ''}`}><i /><i /><i /></span>
               {musicOn ? 'Pause' : 'Music'}
