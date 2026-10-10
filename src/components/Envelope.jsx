@@ -240,7 +240,6 @@ export default function Envelope({ onOpen }) {
 
               {/* ── wax seal ── */}
               <div className={`env-seal ${state === 'seal-pop' || isOpen && !flapOpen ? 'env-seal--pop' : ''} ${flapOpen ? 'env-seal--gone' : ''}`}>
-                <div className="env-seal-outer" />
                 <div className="env-seal-disc">
                   <span className="env-seal-heart">♥</span>
                 </div>

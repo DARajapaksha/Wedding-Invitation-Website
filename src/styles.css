@@ -550,18 +550,15 @@ th { color:var(--muted); letter-spacing:.12em; text-transform:uppercase; font-si
   transition: transform .9s cubic-bezier(.22,1,.36,1), z-index 0s .25s;
 }
 .env-flap-face {
-  position: absolute; 
-  left: 5%; right: 5%;
-  aspect-ratio: 1;
-  margin-top: -65%;
+  position: absolute;
+  inset: 0;
   background: linear-gradient(155deg, #fffaf6 0%, #f4e7dd 100%);
-  transform: rotate(45deg);
-  border-radius: 20px;
-  box-shadow: 2px 2px 20px rgba(80,40,30,0.12);
+  clip-path: polygon(0 0, 100% 0, 50% 70%);
 }
 .env-flap-shine {
-  position: absolute; inset: 0;
-  border-radius: inherit;
+  position: absolute;
+  inset: 0;
+  clip-path: inherit;
   background: linear-gradient(135deg, rgba(255,255,255,.3) 0%, transparent 60%);
 }
 
@@ -574,22 +571,17 @@ th { color:var(--muted); letter-spacing:.12em; text-transform:uppercase; font-si
   width: 62px; height: 62px;
   display: flex; align-items: center; justify-content: center;
   transition: transform .45s cubic-bezier(.22,1,.36,1), opacity .45s ease;
-  animation: seal-breathe 3s ease-in-out infinite;
+  isolation: isolate;
 }
 .env-seal--pop  { transform: translate(-50%,-50%) scale(1.22); }
 .env-seal--gone { transform: translate(-50%,-50%) scale(0) rotate(20deg) !important; opacity: 0 !important; }
 
-.env-seal-outer {
-  position: absolute; inset: -6px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(230,207,158,.6);
-  animation: seal-ring 3s ease-in-out infinite;
-}
 .env-seal-disc {
   position: relative;
   width: 60px; height: 60px;
   border-radius: 50%;
   overflow: hidden;
+  transform: translateZ(1px);
   background:
     radial-gradient(ellipse at 28% 18%, rgba(255,248,196,.72) 0 5%, transparent 21%),
     radial-gradient(circle at 32% 28%, #e8bd57 0%, #c38a2d 46%, #9b641b 78%, #71430e 100%);
@@ -633,15 +625,6 @@ th { color:var(--muted); letter-spacing:.12em; text-transform:uppercase; font-si
     0 -1px 0 rgba(104,57,7,.48),
     1px 2px 3px rgba(70,32,2,.42);
   line-height: 1;
-}
-
-@keyframes seal-breathe {
-  0%,100% { filter: drop-shadow(0 0 0 rgba(230,207,100,0)); }
-  50%      { filter: drop-shadow(0 0 18px rgba(230,207,100,.5)); }
-}
-@keyframes seal-ring {
-  0%,100% { opacity:.45; transform: scale(1); }
-  50%      { opacity:.9;  transform: scale(1.07); }
 }
 
 /* ── Glare ───────────────────────────────────────────────────── */
