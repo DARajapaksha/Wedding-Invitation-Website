@@ -1,3 +1,5 @@
+import FadeIn from './FadeIn';
+
 export default function Itinerary({ items }) {
   return (
     <section className="section-pad site-shell itinerary-section">
@@ -6,15 +8,15 @@ export default function Itinerary({ items }) {
         <h2 className="font-serif text-4xl sm:text-6xl">Order of celebration</h2>
       </div>
       <div className="itinerary-card paper-card">
-        {items.map((item) => (
-          <div className="itinerary-row" key={`${item.time}-${item.title}`}>
+        {items.map((item, index) => (
+          <FadeIn delay={index * 120} className="itinerary-row" key={`${item.time}-${item.title}`}>
             <div className="itinerary-time">{item.time}</div>
             <div className="itinerary-divider" />
             <div>
               <h3 className="font-serif text-2xl">{item.title}</h3>
               <p className="text-ink-muted mt-1">{item.text}</p>
             </div>
-          </div>
+          </FadeIn>
         ))}
       </div>
     </section>

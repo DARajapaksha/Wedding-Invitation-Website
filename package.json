@@ -10,8 +10,10 @@
     "vercel-dev": "vercel dev"
   },
   "dependencies": {
+    "@types/three": "^0.186.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",

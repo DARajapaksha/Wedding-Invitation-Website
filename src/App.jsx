@@ -11,6 +11,7 @@ import AdminPanel from './components/AdminPanel';
 import CancelRSVP from './components/CancelRSVP';
 import Footer from './components/Footer';
 import Petals from './components/Petals';
+import ThreeScene from './components/ThreeScene';
 
 function getRoute() {
   return window.location.hash || '';
@@ -81,6 +82,7 @@ export default function App() {
       {!opened && <Envelope onOpen={() => setOpened(true)} />}
 
       <div className={`invitation ${opened ? 'is-visible' : 'is-hidden'}`}>
+        {opened && <ThreeScene />}
         <div className="background-layer" aria-hidden="true">
           <div className="bg-glow bg-glow-one" />
           <div className="bg-glow bg-glow-two" />

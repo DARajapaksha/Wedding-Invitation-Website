@@ -1,3 +1,5 @@
+import FadeIn from './FadeIn';
+
 export default function StorySection({ story }) {
   return (
     <section className="section-pad site-shell story-section">
@@ -9,14 +11,14 @@ export default function StorySection({ story }) {
 
       <div className="story-list">
         {story.map((item, index) => (
-          <article className="story-row" key={`${item.year}-${item.title}`}>
+          <FadeIn as="article" delay={index * 150} className="story-row" key={`${item.year}-${item.title}`}>
             <div className="story-year">{item.year}</div>
             <div className="story-line"><span className="story-dot" /></div>
-            <div className="story-copy" style={{ '--delay': `${index * 80}ms` }}>
+            <div className="story-copy">
               <h3 className="font-serif text-3xl">{item.title}</h3>
               <p>{item.text}</p>
             </div>
-          </article>
+          </FadeIn>
         ))}
       </div>
     </section>
